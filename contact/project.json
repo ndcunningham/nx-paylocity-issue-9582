@@ -1,0 +1,92 @@
+{
+  "name": "contact",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "contact/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/contact",
+        "index": "contact/src/index.html",
+        "baseHref": "/",
+        "main": "contact/src/main.ts",
+        "tsConfig": "contact/tsconfig.app.json",
+        "assets": ["contact/src/favicon.ico", "contact/src/assets"],
+        "styles": ["contact/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "contact/webpack.config.ts"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "contact/src/environments/environment.ts",
+              "with": "contact/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "contact/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "contact:build",
+        "hmr": true,
+        "port": 4201
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "contact:build:development"
+        },
+        "production": {
+          "buildTarget": "contact:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "serve-static": {
+      "executor": "@nx/react:module-federation-static-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "serveTarget": "contact:serve"
+      },
+      "configurations": {
+        "development": {
+          "serveTarget": "contact:serve:development"
+        },
+        "production": {
+          "serveTarget": "contact:serve:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "contact/jest.config.ts"
+      }
+    }
+  }
+}
