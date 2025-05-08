@@ -5,6 +5,21 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "test-data": {
+      "command": "node {projectRoot}/src/generate-fake-data.js",
+      "cache": true,
+      "outputs": ["{projectRoot}/src/random.bin"] 
+    },
+    "foo": {
+      "command": "echo foo",
+      "cache":true,
+      "outputs": ["{projectRoot}/test.data"]
+    },
+    "bar": {
+      "command": "echo bar",
+      "cache":true,
+      "outputs": ["{projectRoot}/baz.data"]
+    },
     "build": {
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
